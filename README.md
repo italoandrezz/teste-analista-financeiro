@@ -1,24 +1,24 @@
 # Desafio de analista financeiro
 
-Projeto de Italo Ramos para tratamento dos dados e apuração financeira do terceiro trimestre de 2026.
+Neste projeto, trato os dados do desafio de analista financeiro e apuro os resultados do terceiro trimestre de 2026.
 
-O script preserva as bases originais e gera classificação de gastos, resultado por unidade, receita por produto, inadimplência e conciliação de honorários por CPF. As planilhas contêm fórmulas e valores em cache para consulta sem recálculo imediato.
+Preservo as bases originais e uso o script para classificar os gastos, calcular o resultado por unidade, consolidar a receita por produto, medir a inadimplência e conciliar os honorários por CPF. Mantenho as fórmulas e seus valores em cache na planilha para permitir a consulta sem recálculo imediato.
 
-Requer Python 3.10 ou superior.
+Para executar o projeto, uso Python 3.10 ou superior e instalo a dependência com:
 
 ```powershell
 python -m pip install -r requirements.txt
 python resolver_desafio.py
 ```
 
-Também é possível informar os arquivos de entrada e saída:
+Quando preciso usar outros arquivos, informo os caminhos de entrada e saída:
 
 ```powershell
 python resolver_desafio.py "entrada.xlsx" "saida.xlsx"
 ```
 
-A entrada padrão é `Desafio_Controller_Italo (2).xlsx`. A saída padrão é `Desafio_Italo_Andre_Mendes_da_Silva_Ramos_Completo.xlsx`.
+Uso `Desafio_Controller_Italo (2).xlsx` como entrada padrão e salvo o resultado em `Desafio_Italo_Andre_Mendes_da_Silva_Ramos_Completo.xlsx`.
 
-O script valida a preservação das bases, os caches das fórmulas e as reconciliações dos resultados. A declaração de autoria deve ser preenchida pessoalmente pelo candidato.
+No próprio script, valido a preservação das bases, os caches das fórmulas e as reconciliações dos resultados. Reservo o preenchimento da declaração de autoria em `RESPOSTAS!D33` para depois da leitura do seu conteúdo.
 
-Veja `VALIDACAO.md` para a comparação com a planilha de referência.
+Registrei a comparação com a planilha de referência em [VALIDACAO.md](VALIDACAO.md).

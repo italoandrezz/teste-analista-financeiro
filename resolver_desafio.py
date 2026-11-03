@@ -1,4 +1,4 @@
-"""Concilia lancamentos, apura resultados e serializa formulas e caches OOXML."""
+"""Concilio lançamentos, apuro resultados e serializo fórmulas e caches OOXML."""
 from pathlib import Path
 from decimal import Decimal, ROUND_HALF_UP
 from datetime import datetime
@@ -63,7 +63,7 @@ def money_formula(ref):
 
 
 def formatar_apresentacao(w):
-    """Configura estilos, dimensoes e paginacao das abas de apresentacao."""
+    """Configuro estilos, dimensões e paginação das abas de apresentação."""
     answers, dre = w['RESPOSTAS'], w['RESULTADO_UNIDADE']
     for sheet, bounds, vertical in [(answers, (33, 8), 'top'), (dre, (10, 7), 'center')]:
         for row in sheet.iter_rows(max_row=bounds[0], max_col=bounds[1]):
@@ -79,7 +79,7 @@ def formatar_apresentacao(w):
                     alignment.wrap_text = True
                 cell.alignment = alignment
     for r in (1, 2, 5, 9, 12, 16, 18, 21, 23, 25, 32):
-        # Copia o valor para a celula ancora antes de mesclar a linha.
+        # Copio o valor para a célula âncora antes de mesclar a linha.
         if answers.cell(r, 1).value is None:
             donor = next((answers.cell(r, c) for c in range(2, 9)
                           if answers.cell(r, c).value is not None), None)
@@ -111,7 +111,7 @@ def formatar_apresentacao(w):
     for address, label in {'B3':'Receita (R$)', 'C3':'(-) Custos (R$)',
                            'E3':'(-) Despesas (R$)', 'F3':'Resultado (R$)'}.items():
         dre[address] = label
-    # O Excel grava no OOXML a largura incluindo seu preenchimento de 0,7109375.
+    # Incluo o preenchimento de 0,7109375 na largura gravada no OOXML.
     dre.column_dimensions['A'].width = 24.7109375
     for col in ('B', 'C', 'E', 'F'):
         dre.column_dimensions[col].width = 21.7109375
@@ -129,7 +129,7 @@ def formatar_apresentacao(w):
             dre.cell(r, col).alignment = Alignment(horizontal='left' if col == 1 else 'right',
                                                   vertical='center', wrap_text=True)
     for sheet, last, pages, zoom in [(answers, 'H33', 2, 70), (dre, 'G10', 1, 85)]:
-        # A base agrupa larguras (B:C e E:G); separar evita faixas sobrepostas.
+        # Separo as larguras agrupadas em B:C e E:G para evitar faixas sobrepostas.
         for c in range(1, 9 if sheet == answers else 8):
             dim = sheet.column_dimensions[openpyxl.utils.get_column_letter(c)]
             dim.min = dim.max = c
@@ -388,7 +388,7 @@ def solve(source, destination):
     def brl(value):
         value = value.quantize(Decimal('.01'), rounding=ROUND_HALF_UP)
         return f'R$ {value:,.2f}'.replace(',', '_').replace('.', ',').replace('_', '.')
-    # Exclui recebimentos posteriores do saldo em aberto projetado.
+    # Excluo recebimentos posteriores do saldo em aberto projetado.
     still_open = sum(money(r[5]) for r in installments if datetime(2026,7,1) <= r[4] <= datetime(2026,9,30)
                      and norm(r[7]) not in ('cancelado','renegociado') and r[6] is None)
     recovered_later = num-still_open
@@ -455,7 +455,7 @@ def solve(source, destination):
     w['PYTHON'].column_dimensions['B'].width=135
     w.calculation=CalcProperties(calcId=191029,fullCalcOnLoad=True)
     w.save(destination)
-    # Cache OOXML: mantém fórmulas e resultados calculados pelo mesmo algoritmo.
+    # Gravo no cache OOXML os resultados calculados, preservando as fórmulas.
     namespace='http://schemas.openxmlformats.org/spreadsheetml/2006/main'
     tag=lambda s: '{'+namespace+'}'+s
     with zipfile.ZipFile(destination) as archive:
@@ -481,7 +481,7 @@ def solve(source, destination):
     with zipfile.ZipFile(destination,'w',zipfile.ZIP_DEFLATED) as archive:
         for path,data in files.items():
             archive.writestr(path,data)
-    # Validação de preservação, fórmulas, caches e reconciliação.
+    # Valido a preservação das bases, os caches e a reconciliação dos totais.
     check=openpyxl.load_workbook(destination,data_only=True)
     original=openpyxl.load_workbook(source,data_only=False)
     saved=openpyxl.load_workbook(destination,data_only=False)
